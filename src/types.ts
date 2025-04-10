@@ -1,4 +1,4 @@
-import { Component, Plugin } from 'vue';
+import { Component, Plugin, type ComputedRef, type Ref } from 'vue';
 import { VBottomSheet } from 'vuetify/lib/components/VBottomSheet/index.mjs';
 import { VBtn } from 'vuetify/lib/components/VBtn/index.mjs';
 import { VCard } from 'vuetify/lib/components/VCard/index.mjs';
@@ -50,7 +50,7 @@ export type ConfirmDialogOptions = {
 export type CreateDialogOptions = {
   title: string;
   text: string;
-  buttons?: DialogButton[];
+  buttons?: DialogButton[] | Ref<DialogButton[]> | ComputedRef<DialogButton[]>;
   icon?: string;
   level?: Level;
   customComponent?: ComponentOptions;

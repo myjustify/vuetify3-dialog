@@ -14,7 +14,7 @@ const props = defineProps({
     required: true
   },
   buttons: {
-    type: Array as () => any[],
+    type: [Array, Object] as any[],
   },
   icon: {
     type: String,
@@ -46,7 +46,11 @@ let showDialog = ref(true)
 
 // ------- METHODS -------
 function close(buttonKey: string | boolean){
-  showDialog.value = false
+  if (props.dialogOptions && props.dialogOptions.confirm) {
+    props.dialogOptions.confirm(buttonKey, showDialog)
+  } else {
+    showDialog.value = false
+  }
   emit('closeDialog', buttonKey)
 }
 

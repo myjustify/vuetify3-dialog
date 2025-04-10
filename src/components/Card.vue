@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, unref, PropType } from 'vue';
 import { VBtn, VCard, VCardActions, VCardText, VCardTitle, VIcon } from 'vuetify/lib/components/index.mjs';
-
 const props = defineProps({
   title: {
     type: String,
@@ -12,7 +11,8 @@ const props = defineProps({
     required: true
   },
   buttons: {
-    type: Array as () => any[],
+    type: [Array, Object] as any[],
+    default: () => []
   },
   icon: {
     type: String,
@@ -33,7 +33,7 @@ const emit = defineEmits(['buttonClicked'])
 
 // ------- COMPUTED -------
 const _buttons = computed(() => {
-  if(props.buttons && props.buttons.length > 0) return props.buttons
+  if(unref(props.buttons) && unref(props.buttons)?.length > 0) return unref(props.buttons)
   else return [
     { key: 'cancel', title: 'Annuler', value: 'cancel', color: 'grey', variant: 'text' },
     { key: 'ok', title: 'OK', value: 'ok', color: props.level, variant: 'tonal' }
@@ -73,12 +73,12 @@ function close(buttonKey: string | boolean){
     <VCardActions>
       <VBtn
         v-for="button in _buttons"
-        :key="button.key"
+        :key="button?.key"
         v-bind="button"
-        :color="button.color || _color"
-        @click="close(button.key)"
+        :color="button?.color || _color"
+        @click="close(button?.key)"
       >
-        {{button.title}}
+        {{button?.title}}
       </VBtn>
     </VCardActions>
   </VCard>

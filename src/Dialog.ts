@@ -1,6 +1,6 @@
 import PluginContext from 'PluginContext';
 import { BasicDialogOptions, ConfirmDialogOptions, CreateDialogOptions } from 'types';
-import { h, render } from 'vue';
+import { h, render, unref } from 'vue';
 import Dialog from './components/Dialog.vue';
 
 export default class Dialogs {
@@ -29,7 +29,10 @@ export function createDialog(options: CreateDialogOptions) {
     }
 
     if (options.buttons) {
-      options.buttons.forEach(validateButton);
+      const buttons = unref(options.buttons);
+      if (Array.isArray(buttons)) {
+        buttons.forEach(validateButton);
+      }
     }
 
     return new Promise((resolve, reject) => {
